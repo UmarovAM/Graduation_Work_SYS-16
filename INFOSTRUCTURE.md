@@ -52,7 +52,7 @@ provider_installation {
 }
 ```
 
-## Terraform настройка
+### Terraform настройка
 
 Terraform использует конфигурационные файлы с расширением .tf 
 
@@ -78,7 +78,7 @@ terraform {
 terraform init
 terraform apply
 ```
-### 3. Создание инфраструктуры с помощью Terraform.
+## 3. Создание инфраструктуры с помощью Terraform.
 
 ## 3.1 Создаем 2 ВМ для сайта в разных зонах
 файл main.tf
