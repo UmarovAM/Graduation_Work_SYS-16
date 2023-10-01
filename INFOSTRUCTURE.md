@@ -8,3 +8,5 @@
 
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/8a5576be-e1fc-40e1-b508-f70cae0f6f23)
 
+### 2. Установка Terraform. Использую инструкцию из ДЗ с моего GIT 
+https://github.com/UmarovAM/my_Terraform/blob/main/READMEold.md
