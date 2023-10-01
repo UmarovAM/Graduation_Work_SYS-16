@@ -6,7 +6,8 @@
 
 ## 1. Создаем активный платежный аккаунт,  выбираем каталог, в котором будет работать наша инфраструктура:
 
-![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/478298ec-aea6-4359-89b5-437f0a60a018)
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/ddd7659b-4281-4bcd-b521-ba7f857c6c73)
+
 
 
 ## 2. Установка Terraform. Использую инструкцию из ДЗ с моего GIT 
