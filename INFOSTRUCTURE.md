@@ -56,17 +56,6 @@ provider_installation {
 
 Terraform использует конфигурационные файлы с расширением .tf 
 
-Минимальный набор переменных для успешного 
-подключения:
-
-```bash
-provider "Имя провайдера" {
- user = "ваш_логин"
- password = "ваш_пароль"
- org = "название_организации"
- url = "название сайта с api "
-}
-
 ```
 Для проверки запуска локально
 
@@ -83,7 +72,7 @@ terraform {
 ```
 
 Сохраняем конфигурацию, и пробуем подключиться:
-Запускать надо там, где находится файл xxx.tf
+Запускать надо там, где находится файл main.tf
 
 ```bash
 terraform init
@@ -91,45 +80,47 @@ terraform apply
 ```
 ### 3. Создание инфраструктуры с помощью Terraform.
 
-Создаем файл main.tf
+## 3.1 
+Создаем 2 ВМ для сайта в разных зонах
+файл main.tf
 
 ```bash
-# конфигурация провайдера
 
 terraform {
-  required_providers {
-    yandex = {
-    source = "yandex-cloud/yandex"
-    }
-  }
+        required_providers {
+                yandex = {
+                        source = "yandex-cloud/yandex"
+                }
+        }
 }
-
 provider "yandex" {
-    token = "" # Получить OAuth-токен для  Yandex Cloud  с помощью запроса к Яндекс OAuth https://cloud.yandex.ru/docs/iam/concepts/authorization/oauth-token"
+    token = "y0_AgAAAAAQB8GdAATuwQAAAADuAUWBLi2C7mV7TEGPvw_-4ecn8bo9Qy" # Получить OAuth-токен для  Yandex Cloud  с помощью запроса к Яндекс OAuth"        
     cloud_id = "b1g3e3esaheu3s6on970"
     folder_id = "b1gov3unfr7e8jj3g22v"
     zone = "ru-central1-b"
 }
 
 # конфигурации ресурсов
-
+# ВМ_1 для сайта zone 'a'
 resource "yandex_compute_instance" "vm-1" {
-  name        = "my-debian-vm-terraform-ansible"
+  name        = "my-debian-vm-myshop-vm-1"
+  allow_stopping_for_update = true
   zone        = "ru-central1-b"
 
   resources {
     core_fraction = 20
     cores  = 2
-    memory = 2
+    memory = 1
   }
 
   boot_disk {
     initialize_params {
-      image_id = "fd8pqqqelpfjceogov30" 
+      image_id = "fd8suc83g7bvp2o7edee"
+# "fd8pqqqelpfjceogov30"
       size = 5
     }
   }
-# image_id = fd8suc83g7bvp2o7edee deb 10
+
   network_interface {
     subnet_id = "${yandex_vpc_subnet.subnet-1.id}"
     nat       = true
@@ -139,12 +130,45 @@ resource "yandex_compute_instance" "vm-1" {
     user-data = "${file("./meta.txt")}"
     #ssh-keys = "user:{file(~/.ssh/id_rsa.pub)}"
   }
-# Сделать виртуальную машину прерываемой
+  scheduling_policy {
+    preemptible = true
+  }
+}
+# ВМ_2 для сайта deb 10 zone 'c'
+resource "yandex_compute_instance" "vm-2" {
+  name        = "my-debian-vm-myshop-vm-2"
+  allow_stopping_for_update = true
+  zone        = "ru-central1-b"
+
+  resources {
+    core_fraction = 20
+    cores  = 2
+    memory = 1
+  }
+
+  boot_disk {
+    initialize_params {
+      image_id = "fd8suc83g7bvp2o7edee"
+# "fd8pqqqelpfjceogov30"
+      size = 5
+    }
+  }
+
+  network_interface {
+    subnet_id = "${yandex_vpc_subnet.subnet-1.id}"
+    nat       = true
+  }
+
+  metadata = {
+    user-data = "${file("./meta.txt")}"
+    #ssh-keys = "user:{file(~/.ssh/id_rsa.pub)}"
+  }
   scheduling_policy {
     preemptible = true
   }
 }
 
+# интерфейсы
 resource "yandex_vpc_network" "network-1" {
   name = "network1"
 }
@@ -166,6 +190,19 @@ output "external-vm-1" {
 
 output "macAddress-vm-1" {
     value = yandex_compute_instance.vm-1.network_interface.0.mac_address
+}
+
+
+output "internal-vm-2" {
+    value = yandex_compute_instance.vm-2.network_interface.0.ip_address
+}
+
+output "external-vm-2" {
+    value = yandex_compute_instance.vm-2.network_interface.0.nat_ip_address
+}
+
+output "macAddress-vm-2" {
+    value = yandex_compute_instance.vm-2.network_interface.0.mac_address
 }
 ```
 
