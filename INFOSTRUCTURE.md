@@ -84,7 +84,6 @@ terraform apply
 файл main.tf
 
 ```bash
-
 terraform {
         required_providers {
                 yandex = {
@@ -93,14 +92,16 @@ terraform {
         }
 }
 provider "yandex" {
-    token = "y0_AgAAAAAQB8GdAATuwQAAAADuAUWBLi2C7mV7TEGPvw_-4ecn8bo9Qy" # Получить OAuth-токен для  Yandex Cloud  с помощью запроса к Яндекс OAuth"        
+    token = "y0_AgAAAAAQB8GdAATuwQAAAADuAUWBLi2C7mV7TEGPvw_-4ecn8bo9Qy" # Получить OAuth-токен для  Yandex Cloud  с помощью запроса к Яндекс OAuth"
     cloud_id = "b1g3e3esaheu3s6on970"
     folder_id = "b1gov3unfr7e8jj3g22v"
     zone = "ru-central1-b"
 }
 
 # конфигурации ресурсов
+
 # ВМ_1 для сайта zone 'a'
+
 resource "yandex_compute_instance" "vm-1" {
   name        = "my-debian-vm-myshop-vm-1"
   allow_stopping_for_update = true
@@ -115,7 +116,6 @@ resource "yandex_compute_instance" "vm-1" {
   boot_disk {
     initialize_params {
       image_id = "fd8suc83g7bvp2o7edee"
-# "fd8pqqqelpfjceogov30"
       size = 5
     }
   }
@@ -127,13 +127,15 @@ resource "yandex_compute_instance" "vm-1" {
 
   metadata = {
     user-data = "${file("./meta.txt")}"
-    #ssh-keys = "user:{file(~/.ssh/id_rsa.pub)}"
   }
   scheduling_policy {
     preemptible = true
   }
 }
-# ВМ_2 для сайта deb 10 zone 'c'
+
+
+# ВМ_2 для сайта deb 10 zone 'b'
+
 resource "yandex_compute_instance" "vm-2" {
   name        = "my-debian-vm-myshop-vm-2"
   allow_stopping_for_update = true
@@ -148,7 +150,6 @@ resource "yandex_compute_instance" "vm-2" {
   boot_disk {
     initialize_params {
       image_id = "fd8suc83g7bvp2o7edee"
-# "fd8pqqqelpfjceogov30"
       size = 5
     }
   }
@@ -160,17 +161,22 @@ resource "yandex_compute_instance" "vm-2" {
 
   metadata = {
     user-data = "${file("./meta.txt")}"
-    #ssh-keys = "user:{file(~/.ssh/id_rsa.pub)}"
   }
   scheduling_policy {
     preemptible = true
   }
 }
 
-# интерфейсы
+
+
 resource "yandex_vpc_network" "network-1" {
   name = "network1"
 }
+
+
+#resource "yandex_vpc_network" "network-2" {
+#  name = "network2"
+#}
 
 resource "yandex_vpc_subnet" "subnet-1" {
   name           = "subnet1"
@@ -192,6 +198,13 @@ output "macAddress-vm-1" {
 }
 
 
+#resource "yandex_vpc_subnet" "subnet-2" {
+#  name           = "subnet2"
+#  zone           = "ru-central1-b"
+#  v4_cidr_blocks = ["192.168.10.0/24"]
+#  network_id     = "${yandex_vpc_network.network-1.id}"
+#}
+
 output "internal-vm-2" {
     value = yandex_compute_instance.vm-2.network_interface.0.ip_address
 }
@@ -203,6 +216,7 @@ output "external-vm-2" {
 output "macAddress-vm-2" {
     value = yandex_compute_instance.vm-2.network_interface.0.mac_address
 }
+
 ```
 
 ```bash
