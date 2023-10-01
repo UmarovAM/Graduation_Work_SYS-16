@@ -92,7 +92,7 @@ terraform {
         }
 }
 provider "yandex" {
-    token = "y0_AgAAAAAQB8GdAATuwQAAAADuAUWBLi2C7mV7TEGPvw_-4ecn8bo9Qyc" # Получить OAuth-токен для  Yandex Cloud  с помощью запроса к Яндекс OAuth"
+    token = "y0_AgAAAAAQB8GdAATuwQAAAADuAUWBLi2C7mV7TEGPvw_-4ecn8bo9Qy" # Получить OAuth-токен для  Yandex Cloud  с помощью запроса к Яндекс OAuth"
     cloud_id = "b1g3e3esaheu3s6on970"
     folder_id = "b1gov3unfr7e8jj3g22v"
 #    zone = "ru-central1-b"
@@ -215,15 +215,16 @@ output "macAddress-vm-2" {
     value = yandex_compute_instance.vm-2.network_interface.0.mac_address
 }
 ```
-
 ```bash
 terraform plan
 terraform validate
 terraform show
 terraform apply
 terraformBin destroy
-
 ```
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/44cf5025-74f7-4d19-860a-45ce28e6fbe6)
+
+
 
 Добавить пользователя на создаваемую ВМ metadata
 
