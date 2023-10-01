@@ -46,8 +46,7 @@ resource "yandex_compute_instance" "vm-1" {
     preemptible = true                                                                                                                                                
   }                                                                                                                                                                   
 }                                                                                                                                                                     
-                                                                                                                                                                      
-                                                                                                                                                                      
+                                                                                                                                                               
 # ВМ_2 для сайта deb 10 zone 'b'                                                                                                                                      
                                                                                                                                                                       
 resource "yandex_compute_instance" "vm-2" {                                                                                                                           
@@ -81,39 +80,26 @@ resource "yandex_compute_instance" "vm-2" {
   }                                                                                                                                                                   
 }                                                                                                                                                                     
                                                                                                                                                                       
-                                                                                                                                                                  
-                                                                                                                                                                      
-                                                                                                                                                                      
+                                                                                                                                                                   
 resource "yandex_vpc_network" "network-1" {                                                                                                                           
-#  folder_id = yandex_compute_instance.vm-1.id                                                                                                                        
   name = "network1"                                                                                                                                                   
 }                                                                                                                                                                     
                                                                                                                                                                       
-                                                                                                                                                                      
-#resource "yandex_vpc_network" "network-2" {                                                                                                                          
-#  name = "network2"                                                                                                                                                  
-#}                                                                                                                                                                    
-                                                                                                                                                                      
-                                                                                                                                                                      
-                                                                                                                                                                      
+                                                                                                                                                                   
 resource "yandex_vpc_subnet" "subnet-1" {                                                                                                                             
   name           = "subnet1"                                                                                                                                          
   zone           = "ru-central1-a"                                                                                                                                    
   v4_cidr_blocks = ["192.168.10.0/24"]                                                                                                                                
   network_id     = "${yandex_vpc_network.network-1.id}"                                                                                                               
 }                                                                                                                                                                     
-                                                                                                                                                                      
-                                                                                                                                                                      
+                                                                                                                                                                     
 resource "yandex_vpc_subnet" "subnet-2" {                                                                                                                             
   name           = "subnet2"                                                                                                                                          
   zone           = "ru-central1-b"                                                                                                                                    
   v4_cidr_blocks = ["192.168.11.0/24"]                                                                                                                                
   network_id     = "${yandex_vpc_network.network-1.id}"                                                                                                               
 }                                                                                                                                                                     
-                                                                                                                                                                      
-                                                                                                                                                                      
-                                                                                                                                                                      
-                                                                                                                                                                      
+                                                                                                                                                                     
 output "internal-vm-1" {                                                                                                                                              
     value = yandex_compute_instance.vm-1.network_interface.0.ip_address                                                                                               
 }                                                                                                                                                                     
@@ -125,10 +111,8 @@ output "external-vm-1" {
 output "macAddress-vm-1" {                                                                                                                                            
     value = yandex_compute_instance.vm-1.network_interface.0.mac_address                                                                                              
 }                                                                                                                                                                     
-                                                                                                                                                                      
-                                                                                                                                                                      
-                                                                                                                                                                      
-                                                                                                                                                                      
+
+
 output "internal-vm-2" {                                                                                                                                              
     value = yandex_compute_instance.vm-2.network_interface.0.ip_address                                                                                               
 }                                                                                                                                                                     
