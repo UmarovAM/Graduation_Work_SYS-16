@@ -83,7 +83,7 @@ terraform apply
 ## 3.1 Создаем 2 ВМ для сайта в разных зонах
 файл main.tf
 
-```bash
+```terraform
 terraform {
         required_providers {
                 yandex = {
