@@ -256,5 +256,11 @@ sudo passwd root
 
 ```
 
-## Ansible use whith terraform
+### 3.2 Установка nginx с помощью Ansible
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/43df73f1-7e68-405b-8584-7a0554e6c0a0)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/e605a1b0-c40a-4cb0-9819-cca0db63b171)
+
+
 
