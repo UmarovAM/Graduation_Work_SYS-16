@@ -263,4 +263,42 @@ sudo passwd root
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/e605a1b0-c40a-4cb0-9819-cca0db63b171)
 
 
+### 3.3 Настройка балансировщика
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/e147c533-6642-48e3-97b2-4b3886f873c8)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/5f9ec93a-7302-4bf4-87ce-05e108d1f598)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/51e93d13-86c4-4814-b216-296c61d9d6be)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/bbd0f875-6d52-47e9-9665-5b29d12dc1b3)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/de67d402-9fc6-48ca-a5dd-47db2912be91)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/04a1c5c7-0456-4bed-9a5d-b4ae788fea3f)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/04810dec-1c01-481c-ae60-0b9db943639d)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/f9389a88-8d5c-4398-948e-be4cc6c68b8a)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/c3e3d91a-eb1c-4c15-9514-68a44dd40a8f)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/bdd29ba7-3c21-44e7-af04-19eda6931708)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/710acb63-bb30-4a25-a2f5-7cd6c5b31c17)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/56d94095-9a80-409b-953f-5b18617647a7)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
