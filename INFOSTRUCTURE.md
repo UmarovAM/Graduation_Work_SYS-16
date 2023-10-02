@@ -256,14 +256,14 @@ sudo passwd root
 
 ```
 
-### 3.2 Установка nginx с помощью Ansible
+## 3.2 Установка nginx с помощью Ansible
 
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/43df73f1-7e68-405b-8584-7a0554e6c0a0)
 
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/e605a1b0-c40a-4cb0-9819-cca0db63b171)
 
 
-### 3.3 Настройка балансировщика
+## 3.3 Настройка балансировщика
 
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/e147c533-6642-48e3-97b2-4b3886f873c8)
 
@@ -284,6 +284,8 @@ sudo passwd root
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/c3e3d91a-eb1c-4c15-9514-68a44dd40a8f)
 
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/bdd29ba7-3c21-44e7-af04-19eda6931708)
+
+## 3.3.1 Работа балансировщика
 
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/710acb63-bb30-4a25-a2f5-7cd6c5b31c17)
 
