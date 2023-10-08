@@ -1,0 +1,25 @@
+#cloud-config                                                                                            ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+disable_root: true
+timezone: Europe/Moscow
+repo_update: true
+repo_upgrade: true
+apt:
+  preserve_sources_list: true
+packages:
+  - nginx
+runcmd:
+  - [ systemctl, nginx-reload ]
+  - [ systemctl, enable, nginx.service ]
+  - [ systemctl, start, --no-block, nginx.service ]
+  - [ sh, -c, "echo $(hostname | cut -d '.' -f 1 ) > /var/www/html/index.html" ]
+  - [ sh, -c, "echo $(ip add ) >> /var/www/html/index.html" ]
+
+users:
+  - name: user
+    groups: sudo
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh-authorized-keys:
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC3jqZ1fn1GYSsATXeJiF3wtqmMUDMCZV8Yvs9WYpZUbc4bBbIOAIVn5UfVJ1CLSAfmYJ/K6oQJ8QYG48F1bkWoTaBfc/5iwMI3pa1GCGPr2ObtuGN1tZGls2za8xG0ZgWCqfxVeUcnLbfOvIJogIA2HMkayYrJobkNaOXcIiBQiKY7iDu90tjXTjSUjfx3pkI6lbP1I04ZWilkRllTRzBuEkrhkite3eCBYrE+g4WrF9XEs8g93EqXwv7Ss2mabjE5EZBijNlNVN6VuVzjSQVQb4x0aglBZ/C2C1O/YS9EjBL0vVALaRmDUOEaSXXyqDOHhYYxNCRKhvQcFnxNFEhT7Uy5pmM2FzGxBMw7+CLaPxci27s6+UruWVdQmtLKxyZAv3R9NOczYqjX87BkOEqVWi5g159PJgBeQrsztiwlvBw8uHUsGBtlDHzH1d+bRafZrlD9CVcW7hjyD9HNvQYKI9Ej1LANcH+G+bxIc0TR/P/XZOg/MhxOvlNCE32FdW8= root@aziz-VirtualBox
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCYLWrQnIywEOsDKIQMVTcJzZLrvO6FzakjDlGRPiRarIBCkpmaA+27kNy/Xp8MHfW7GHjy8Wfn46p3PrPxIx40UVQxryxQ9WwBojxIIyX1U2aMwIZ5KF+g2qeirsx/trTikdTyhT8gfnLsiXOPyK2Ki5NZnDraK6GnqB/ANM+lWfa1nWcu1W/I9vHJsWcyW34EXDVnAZ7VEQTJNalAnd99VM/BPPkOlO8Y5tEepicanZwSY2ubBRsATsXKrA+prFRaCGA6Cf0kUuOuCZgahaHh53Ts8bQYLgPdgo7ZeIwqiKV+/N7i8YWLHtMRotpAzFZoTEHcjBYwCoGvCkTDgQcl rsa-key-20231008
+      
