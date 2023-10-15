@@ -1,0 +1,20 @@
+# ansible playbook MyShop
+- name: Ping Servers
+  hosts: all
+  become: yes
+
+  vars:
+    packages:
+    file_src: ./index.j2
+    file_dest: /var/www/html/index.html 
+  
+  tasks:
+
+  - name: 1. Task ping
+    ping:
+
+  - name: 2. Copy index.html
+    template:
+      src: "{{file_src}}"
+      dest: "{{file_dest}}"
+      mode: 0777
