@@ -7,12 +7,19 @@ apt:
   preserve_sources_list: true
 packages:
   - nginx
+  - prometheus-node-exporter
+  - prometheus-nginx-exporter
 runcmd:
   - [ systemctl, nginx-reload ]
   - [ systemctl, enable, nginx.service ]
   - [ systemctl, start, --no-block, nginx.service ]
   - [ sh, -c, "echo $(hostname | cut -d '.' -f 1 ) > /var/www/html/index.html" ]
   - [ sh, -c, "echo $(ip add ) >> /var/www/html/index.html" ]
+  - sudo systemctl daemon-reload
+  - sudo systemctl enable prometheus-node-exporter
+  - sudo systemctl start prometheus-node-exporter
+  - sudo systemctl enable prometheus-nginx-exporter
+  - sudo systemctl start prometheus-nginx-exporter
 
 users:
   - name: user
@@ -22,4 +29,4 @@ users:
     ssh-authorized-keys:
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC3jqZ1fn1GYSsATXeJiF3wtqmMUDMCZV8Yvs9WYpZUbc4bBbIOAIVn5UfVJ1CLSAfmYJ/K6oQJ8QYG48F1bkWoTaBfc/5iwMI3pa1GCGPr2ObtuGN1tZGls2za8xG0ZgWCqfxVeUcnLbfOvIJogIA2HMkayYrJobkNaOXcIiBQiKY7iDu90tjXTjSUjfx3pkI6lbP1I04ZWilkRllTRzBuEkrhkite3eCBYrE+g4WrF9XEs8g93EqXwv7Ss2mabjE5EZBijNlNVN6VuVzjSQVQb4x0aglBZ/C2C1O/YS9EjBL0vVALaRmDUOEaSXXyqDOHhYYxNCRKhvQcFnxNFEhT7Uy5pmM2FzGxBMw7+CLaPxci27s6+UruWVdQmtLKxyZAv3R9NOczYqjX87BkOEqVWi5g159PJgBeQrsztiwlvBw8uHUsGBtlDHzH1d+bRafZrlD9CVcW7hjyD9HNvQYKI9Ej1LANcH+G+bxIc0TR/P/XZOg/MhxOvlNCE32FdW8= root@aziz-VirtualBox
       - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCYLWrQnIywEOsDKIQMVTcJzZLrvO6FzakjDlGRPiRarIBCkpmaA+27kNy/Xp8MHfW7GHjy8Wfn46p3PrPxIx40UVQxryxQ9WwBojxIIyX1U2aMwIZ5KF+g2qeirsx/trTikdTyhT8gfnLsiXOPyK2Ki5NZnDraK6GnqB/ANM+lWfa1nWcu1W/I9vHJsWcyW34EXDVnAZ7VEQTJNalAnd99VM/BPPkOlO8Y5tEepicanZwSY2ubBRsATsXKrA+prFRaCGA6Cf0kUuOuCZgahaHh53Ts8bQYLgPdgo7ZeIwqiKV+/N7i8YWLHtMRotpAzFZoTEHcjBYwCoGvCkTDgQcl rsa-key-20231008
-      
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCt6+jnLYuklebO2goPn7dsgRNgGU6G1pt/XFQn8BIsZbjMZGPtMT3zyXDPZxIijBsRK3/BfDaDKMXpGx27J5abRj0xnYMMs/lr4VAljmfUBH4hoobWYL4sC28asK3GT7H3pfSyZ6L7AlDsLe5VaCwOlM0is8zI7DFxu8gMFpUEMi4UwvFbBee+E2URQaZgy/BZ1JHqMrg6u+EKalGCejUsSAVbFnsyhcQsIC089nv1qpOhXPUObeCh+IhG5DCK8IxTcRhPRuYHgRSg3jgVV8N/8a1EqVydoVJsPc4v2dLWFTroR/guHqz9Pa4Tfidz99w5CgmyjkCqnPO/EMFDsy8TXgGPxL5ITeUXl0FWPILK2dfjNFvdFsrL1OPUdisoFQdqhQHFqcNyDOEtZNtZg9ICWa6BmZEC/2OMUByvPEb9E/ZLw+SxMdOVwuJOXqeUYPK0YsNDp5BI9MJ9rGw0HWJKdGJGy6RenHtyGCwyKscVTYmhPziABbD4f/EHNbuQJUU= root@aziz-VirtualBox
