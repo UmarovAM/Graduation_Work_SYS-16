@@ -431,11 +431,41 @@ sudo passwd root
 
 ```
 
-## 3.2 Установка nginx с помощью Ansible
+## 3.2 Установка nginx, prometheus-node-exporter, prometheus-nginx-exporter с помощью Terraform
+```yml
+#cloud-config  
+disable_root: true
+timezone: Europe/Moscow
+repo_update: true
+repo_upgrade: true
+apt:
+  preserve_sources_list: true
+packages:
+  - nginx
+  - prometheus-node-exporter
+  - prometheus-nginx-exporter
+runcmd:
+  - [ systemctl, nginx-reload ]
+  - [ systemctl, enable, nginx.service ]
+  - [ systemctl, start, --no-block, nginx.service ]
+  - [ sh, -c, "echo $(hostname | cut -d '.' -f 1 ) > /var/www/html/index.html" ]
+  - [ sh, -c, "echo $(ip add ) >> /var/www/html/index.html" ]
+  - sudo systemctl daemon-reload
+  - sudo systemctl enable prometheus-node-exporter
+  - sudo systemctl start prometheus-node-exporter
+  - sudo systemctl enable prometheus-nginx-exporter
+  - sudo systemctl start prometheus-nginx-exporter
 
-![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/43df73f1-7e68-405b-8584-7a0554e6c0a0)
+users:
+  - name: user
+    groups: sudo
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh-authorized-keys:
+      - ssh-rsa 
 
-![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/e605a1b0-c40a-4cb0-9819-cca0db63b171)
+```
+
 
 
 ## 3.3 Настройка балансировщика
