@@ -1,4 +1,5 @@
 # ansible playbook MyShop
+
 - name: Ping Servers
   hosts: all
   become: yes
@@ -7,14 +8,47 @@
     packages:
     file_src: ./index.j2
     file_dest: /var/www/html/index.html 
+    fileyml_src: ./prometheus.yml.j2
+    fileyml_dest: /etc/prometheus/prometheus.yml 
   
   tasks:
 
   - name: 1. Task ping
     ping:
 
-  - name: 2. Copy index.html
+  - name: 2. Copy index.html to vm1
     template:
       src: "{{file_src}}"
       dest: "{{file_dest}}"
       mode: 0777
+    when: ansible_default_ipv4.address == '192.168.10.19'
+
+  - name: 3. Copy index.html to vm2
+    template:
+      src: "{{file_src}}"
+      dest: "{{file_dest}}"
+      mode: 0777
+    when: ansible_default_ipv4.address == '192.168.11.8'
+
+  - name: 4. Copy prometheus.yml to vm3
+    template:
+      src: "{{fileyml_src}}"
+      dest: "{{fileyml_dest}}"
+      mode: 0777
+    when: ansible_default_ipv4.address == '192.168.11.9'
+
+#  - name: Edit Targets Site VM ip adress
+#    lineinfile:
+#      dest: /etc/prometheus/prometheus.yml
+#      state: present
+#      regexp: "      - targets: ['localhost:9090']"
+#      line: "      - targets: ['localhost:9090', '158.160.32.192:9100', '158.160.1.60:9100']"
+#    notify: 
+#      - restart_prometheus
+#    when: ansible_default_ipv4.address == '192.168.11.9'
+  handlers:
+  - name: restart_prometheus
+    service:
+      name: prometheus
+      state: restarted
+      enabled: true
