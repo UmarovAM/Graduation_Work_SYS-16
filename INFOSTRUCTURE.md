@@ -258,7 +258,7 @@ resource "yandex_vpc_subnet" "subnet-2" {
 
 
 
-/* # Load Balancer
+ # Load Balancer
 # 1. Создайте Target Group, включите в неё две созданных ВМ.
 resource "yandex_alb_target_group" "target-1" {
   name      = "target-1"
@@ -352,7 +352,7 @@ resource "yandex_alb_load_balancer" "loadbalancer-1" {
       }
     }
   }
-}*/
+}
 
 # Outputs VM-1 VM-2
 
@@ -495,8 +495,66 @@ users:
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/710acb63-bb30-4a25-a2f5-7cd6c5b31c17)
 
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/56d94095-9a80-409b-953f-5b18617647a7)
+## 4. Prometheus и grafana
+### 4.1 Настройка prometheus и grafana 
+```yml
+# ansible playbook MyShop
 
-# 4. Работа prometheus и grafana
+- name: Ping Servers
+  hosts: all
+  become: yes
+
+  vars:
+    packages:
+    file_src: ./index.j2
+    file_dest: /var/www/html/index.html 
+    fileyml_src: ./prometheus.yml.j2
+    fileyml_dest: /etc/prometheus/prometheus.yml 
+  
+  tasks:
+
+  - name: 1. Task ping
+    ping:
+
+  - name: 2. Copy index.html to vm1
+    template:
+      src: "{{file_src}}"
+      dest: "{{file_dest}}"
+      mode: 0777
+    when: ansible_default_ipv4.address == '192.168.10.19'
+
+  - name: 3. Copy index.html to vm2
+    template:
+      src: "{{file_src}}"
+      dest: "{{file_dest}}"
+      mode: 0777
+    when: ansible_default_ipv4.address == '192.168.11.8'
+
+  - name: 4. Copy prometheus.yml to vm3
+    template:
+      src: "{{fileyml_src}}"
+      dest: "{{fileyml_dest}}"
+      mode: 0777
+    when: ansible_default_ipv4.address == '192.168.11.9'
+
+#  - name: Edit Targets Site VM ip adress
+#    lineinfile:
+#      dest: /etc/prometheus/prometheus.yml
+#      state: present
+#      regexp: "      - targets: ['localhost:9090']"
+#      line: "      - targets: ['localhost:9090', '158.160.32.192:9100', '158.160.1.60:9100']"
+#    notify: 
+#      - restart_prometheus
+#    when: ansible_default_ipv4.address == '192.168.11.9'
+  handlers:
+  - name: restart_prometheus
+    service:
+      name: prometheus
+      state: restarted
+      enabled: true
+```
+### 4.2 Работа prometheus и grafana
+
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/6c7673b4-9c39-4993-92b2-46182067b260)
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/bb8a96e9-e83d-4bfa-ae79-3ea0188a6aa6)
 
