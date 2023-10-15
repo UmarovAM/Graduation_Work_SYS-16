@@ -80,7 +80,7 @@ terraform apply
 ```
 ## 3. Создание инфраструктуры с помощью Terraform.
 
-## 3.1 Создаем 2 ВМ для сайта в разных зонах
+## 3.1 Создаем 2 ВМ для сайта в разных зонах и настраиваем LB, 2 ВМ для prometheus и grafana
 файл main.tf
 
 ```terraform
@@ -495,6 +495,10 @@ users:
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/710acb63-bb30-4a25-a2f5-7cd6c5b31c17)
 
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/56d94095-9a80-409b-953f-5b18617647a7)
+
+# 4. Работа prometheus и grafana
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/6c7673b4-9c39-4993-92b2-46182067b260)
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/bb8a96e9-e83d-4bfa-ae79-3ea0188a6aa6)
 
 
 
