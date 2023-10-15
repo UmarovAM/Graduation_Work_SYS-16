@@ -92,14 +92,14 @@ terraform {
   }
 }
 provider "yandex" {
- token = "tOKEN"
+ token = "y0_AgAAAAAQB8GdAATuwQAAAADuAUWBLi2C7mV7TEGPvw_-4ecn8bo9Qyc"
  cloud_id = "b1g3e3esaheu3s6on970"
  folder_id = "b1gov3unfr7e8jj3g22v"
  zone = "ru-central1-b"
 }
 
 
-# ВМ_1 для сайта zone 'a'
+# ВМ 1 для сайта zone 'a'
 
 resource "yandex_compute_instance" "vm-1" {
   name        = "my-debian-vm-myshop-vm-1"
@@ -114,8 +114,8 @@ resource "yandex_compute_instance" "vm-1" {
 
   boot_disk {
     initialize_params {
-      image_id = "fd8suc83g7bvp2o7edee"
-      size = 5
+      image_id = "fd8pecdhv50nec1qf9im"
+      size = 8
     }
   }
 
@@ -125,15 +125,14 @@ resource "yandex_compute_instance" "vm-1" {
   }
 
   metadata = {
-    user-data = "${file("./meta.yml")}"
+    user-data = "${file("./metavmsite.yml")}"
   }
   scheduling_policy {
     preemptible = true
   }
 }
 
-
-# ВМ_2 для сайта deb 10 zone 'b'
+# ВМ 2 для сайта zone 'b'
 
 resource "yandex_compute_instance" "vm-2" {
   name        = "my-debian-vm-myshop-vm-2"
@@ -148,8 +147,8 @@ resource "yandex_compute_instance" "vm-2" {
 
   boot_disk {
     initialize_params {
-      image_id = "fd8suc83g7bvp2o7edee"
-      size = 5
+      image_id = "fd8pecdhv50nec1qf9im"
+      size = 8
     }
   }
 
@@ -159,7 +158,73 @@ resource "yandex_compute_instance" "vm-2" {
   }
 
   metadata = {
-    user-data = "${file("./meta.yml")}"
+    user-data = "${file("./metavmsite.yml")}"
+  }
+  scheduling_policy {
+    preemptible = true
+  }
+}
+
+# ВМ 3 Для Prometheus zone 'b'
+
+resource "yandex_compute_instance" "vm-3" {
+  name        = "my-debian-vm-myshop-vm-3"
+  allow_stopping_for_update = true
+  zone        = "ru-central1-b"
+
+  resources {
+    core_fraction = 20
+    cores  = 2
+    memory = 1
+  }
+
+  boot_disk {
+    initialize_params {
+      image_id = "fd8pecdhv50nec1qf9im"
+      size = 8
+    }
+  }
+
+  network_interface {
+    subnet_id = "${yandex_vpc_subnet.subnet-2.id}"
+    nat       = true
+  }
+
+  metadata = {
+    user-data = "${file("./metaprometheus.yml")}"
+  }
+  scheduling_policy {
+    preemptible = true
+  }
+}
+
+# ВМ 4 Для Grafana zone 'b'
+
+resource "yandex_compute_instance" "vm-4" {
+  name        = "my-debian-vm-myshop-vm-4"
+  allow_stopping_for_update = true
+  zone        = "ru-central1-b"
+
+  resources {
+    core_fraction = 20
+    cores  = 2
+    memory = 1
+  }
+
+  boot_disk {
+    initialize_params {
+      image_id = "fd8pecdhv50nec1qf9im"
+      size = 8
+    }
+  }
+
+  network_interface {
+    subnet_id = "${yandex_vpc_subnet.subnet-2.id}"
+    nat       = true
+  }
+
+  metadata = {
+    user-data = "${file("./metagrafana.yml")}"
   }
   scheduling_policy {
     preemptible = true
@@ -167,37 +232,13 @@ resource "yandex_compute_instance" "vm-2" {
 }
 
 
-/*resource "yandex_compute_instance" "vm" {
-  count = 2
-  name = "vm${count.index}"
-
-  resources{
-  core_fraction = 20
-  cores = 2
-  memory = 2
-  }
-
-  boot_disk {
-    initialize_params{
-      image_id = "fd8s17cfki4sd4l6oa59" # fd8pqqqelpfjceogov30"
-      size = 5
-    }
-  }
-
-  network_interface {
-    subnet_id = yandex_vpc_subnet.subnet-1.id
-    nat       = true
-  }
-
-  metadata = {
-  user-data = file("./meta.yml")
-  }
-}*/
+# Network
 
 resource "yandex_vpc_network" "network-1" {
   name = "network1"
 }
 
+# Subnet zone 'a'
 
 resource "yandex_vpc_subnet" "subnet-1" {
   name           = "subnet1"
@@ -206,6 +247,8 @@ resource "yandex_vpc_subnet" "subnet-1" {
   network_id     = "${yandex_vpc_network.network-1.id}"
 }
 
+# Subnet zone 'b'
+
 resource "yandex_vpc_subnet" "subnet-2" {
   name           = "subnet2"
   zone           = "ru-central1-b"
@@ -213,15 +256,10 @@ resource "yandex_vpc_subnet" "subnet-2" {
   network_id     = "${yandex_vpc_network.network-1.id}"
 }
 
-/*resource "yandex_vpc_subnet" "subnet-1" {
-  name           = "subnet1"
-  zone           = "ru-central1-b"
-  v4_cidr_blocks = ["192.168.0.0/24"]
-  network_id     = "${yandex_vpc_network.network-1.id}"
-}*/
 
+
+/* # Load Balancer
 # 1. Создайте Target Group, включите в неё две созданных ВМ.
-
 resource "yandex_alb_target_group" "target-1" {
   name      = "target-1"
 
@@ -235,9 +273,7 @@ resource "yandex_alb_target_group" "target-1" {
     ip_address   = yandex_compute_instance.vm-2.network_interface.0.ip_address
   }
 }
-
 # 2. Создайте Backend Group, настройте backends на target group, ранее созданную. Настройте healthcheck на корень (/) и порт 80, протокол HTTP.
-
 resource "yandex_alb_backend_group" "my-backend-group-1" {
   name                     = "my-backend-group"
   
@@ -260,9 +296,7 @@ resource "yandex_alb_backend_group" "my-backend-group-1" {
     }
   }
 }
-
 # 3. Создайте HTTP router. Путь укажите — /, backend group — созданную ранее.
-
 resource "yandex_alb_http_router" "router-1" {
   name          = "my-http-router"
   labels        = {
@@ -270,7 +304,6 @@ resource "yandex_alb_http_router" "router-1" {
     empty-label = ""
   }
 }
-
 resource "yandex_alb_virtual_host" "my-virtual-host-1" {
   name                    = "my-virtual-host"
   http_router_id          = yandex_alb_http_router.router-1.id
@@ -284,10 +317,8 @@ resource "yandex_alb_virtual_host" "my-virtual-host-1" {
     }
   }
 } 
-
 # 4. Создайте Application load balancer для распределения трафика на веб-сервера, созданные ранее. 
 #Укажите HTTP router, созданный ранее, задайте listener тип auto, порт 80.
-
 resource "yandex_alb_load_balancer" "loadbalancer-1" {
   name        = "my-load-balancer"
 
@@ -321,8 +352,9 @@ resource "yandex_alb_load_balancer" "loadbalancer-1" {
       }
     }
   }
-}
+}*/
 
+# Outputs VM-1 VM-2
 
 output "internal-vm-1" {
   value = "${yandex_compute_instance.vm-1.network_interface.0.ip_address}"
@@ -337,6 +369,20 @@ output "external-vm-2" {
   value = "${yandex_compute_instance.vm-2.network_interface.0.nat_ip_address}"
 }
 
+# Outputs VM-3 (Prometheus) VM-4 (Grafana)
+
+output "internal-vm-3" {
+  value = "${yandex_compute_instance.vm-3.network_interface.0.ip_address}"
+}
+output "external-vm-3" {
+  value = "${yandex_compute_instance.vm-3.network_interface.0.nat_ip_address}"
+}
+output "internal-vm-4" {
+  value = "${yandex_compute_instance.vm-4.network_interface.0.ip_address}"
+}
+output "external-vm-4" {
+  value = "${yandex_compute_instance.vm-4.network_interface.0.nat_ip_address}"
+}
 
 #resource "yandex_compute_snapshot" "snapshot-1" {
 #  name = "snap-1"
