@@ -92,7 +92,7 @@ terraform {
   }
 }
 provider "yandex" {
- token = ""
+ token = "y0_AgAAAAAQB8GdAATuwQAAAADuAUWBLi2C7mV7TEGPvw_-4ecn8bo9Qyc"
  cloud_id = "b1g3e3esaheu3s6on970"
  folder_id = "b1gov3unfr7e8jj3g22v"
  zone = "ru-central1-b"
@@ -231,6 +231,73 @@ resource "yandex_compute_instance" "vm-4" {
   }
 }
 
+# ВМ 5 Для Elasticsearch zone 'b'
+
+resource "yandex_compute_instance" "vm-5" {
+  name        = "my-debian-vm-myshop-vm-5"
+  allow_stopping_for_update = true
+  zone        = "ru-central1-b"
+
+  resources {
+    core_fraction = 20
+    cores  = 2
+    memory = 1
+  }
+
+  boot_disk {
+    initialize_params {
+      image_id = "fd8pecdhv50nec1qf9im"
+      size = 8
+    }
+  }
+
+  network_interface {
+    subnet_id = "${yandex_vpc_subnet.subnet-2.id}"
+    nat       = true
+  }
+
+  metadata = {
+    user-data = "${file("./metaelasticsearch.yml")}"
+  }
+  scheduling_policy {
+    preemptible = true
+  }
+}
+
+# ВМ 6 Для Kibana zone 'b'
+
+resource "yandex_compute_instance" "vm-6" {
+  name        = "my-debian-vm-myshop-vm-6"
+  allow_stopping_for_update = true
+  zone        = "ru-central1-b"
+
+  resources {
+    core_fraction = 20
+    cores  = 2
+    memory = 1
+  }
+
+  boot_disk {
+    initialize_params {
+      image_id = "fd8pecdhv50nec1qf9im"
+      size = 8
+    }
+  }
+
+  network_interface {
+    subnet_id = "${yandex_vpc_subnet.subnet-2.id}"
+    nat       = true
+  }
+
+  metadata = {
+    user-data = "${file("./metakibana.yml")}"
+  }
+  scheduling_policy {
+    preemptible = true
+  }
+}
+
+
 
 # Network
 
@@ -258,7 +325,7 @@ resource "yandex_vpc_subnet" "subnet-2" {
 
 
 
- # Load Balancer
+# Load Balancer
 # 1. Создайте Target Group, включите в неё две созданных ВМ.
 resource "yandex_alb_target_group" "target-1" {
   name      = "target-1"
@@ -383,6 +450,22 @@ output "internal-vm-4" {
 output "external-vm-4" {
   value = "${yandex_compute_instance.vm-4.network_interface.0.nat_ip_address}"
 }
+
+# Outputs VM-3 (Elasticsearch) VM-4 (Kibana)
+
+output "internal-vm-5" {
+  value = "${yandex_compute_instance.vm-5.network_interface.0.ip_address}"
+}
+output "external-vm-5" {
+  value = "${yandex_compute_instance.vm-5.network_interface.0.nat_ip_address}"
+}
+output "internal-vm-6" {
+  value = "${yandex_compute_instance.vm-6.network_interface.0.ip_address}"
+}
+output "external-vm-6" {
+  value = "${yandex_compute_instance.vm-6.network_interface.0.nat_ip_address}"
+}
+
 
 #resource "yandex_compute_snapshot" "snapshot-1" {
 #  name = "snap-1"
