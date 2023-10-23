@@ -641,6 +641,13 @@ users:
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/6c7673b4-9c39-4993-92b2-46182067b260)
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/bb8a96e9-e83d-4bfa-ae79-3ea0188a6aa6)
 
+# 5 Логи
+Cоздайте ВМ, разверните на ней Elasticsearch. Установите filebeat в ВМ к веб-серверам, настройте на отправку access.log, error.log nginx в Elasticsearch.
+
+Создайте ВМ, разверните на ней Kibana, сконфигурируйте соединение с Elasticsearch
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/22f53d85-f6c5-406b-bd11-63487e5cab78)
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/02fffa97-79de-46bd-8ef8-3a40b7324114)
 
 
 
