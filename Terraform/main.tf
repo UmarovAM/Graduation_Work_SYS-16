@@ -239,7 +239,7 @@ resource "yandex_vpc_subnet" "subnet-2" {
 
 
 
-/* # Load Balancer
+# Load Balancer
 # 1. Создайте Target Group, включите в неё две созданных ВМ.
 resource "yandex_alb_target_group" "target-1" {
   name      = "target-1"
@@ -333,7 +333,7 @@ resource "yandex_alb_load_balancer" "loadbalancer-1" {
       }
     }
   }
-}*/
+}
 
 # Outputs VM-1 VM-2
 
