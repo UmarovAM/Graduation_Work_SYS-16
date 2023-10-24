@@ -4,16 +4,16 @@
 Инфраструктура должна размещаться в Yandex Cloud и отвечать минимальным стандартам безопасности
 
 
-## 1. Создаем активный платежный аккаунт,  выбираем каталог, в котором будет работать наша инфраструктура:
+# a. Создаем активный платежный аккаунт,  выбираем каталог, в котором будет работать наша инфраструктура:
 
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/ddd7659b-4281-4bcd-b521-ba7f857c6c73)
 
 
 
-## 2. Установка Terraform. Использую инструкцию из ДЗ с моего GIT 
+# b. Установка Terraform. Использую инструкцию из ДЗ с моего GIT 
 https://github.com/UmarovAM/my_Terraform/blob/main/READMEold.md
 
-### Из зеркала yandex
+## Из зеркала yandex
 
  ```bash
  wget https://hashicorp-releases.yandexcloud.net/terraform/1.3.6/terraform_1.3.6_linux_amd64.zip
@@ -52,7 +52,7 @@ provider_installation {
 }
 ```
 
-### Terraform настройка
+## Terraform настройка
 
 Terraform использует конфигурационные файлы с расширением .tf 
 
@@ -78,9 +78,9 @@ terraform {
 terraform init
 terraform apply
 ```
-## 3. Создание инфраструктуры с помощью Terraform.
+# 1. Создание инфраструктуры с помощью Terraform.
 
-## 3.1 Создаем 2 ВМ для сайта в разных зонах и настраиваем LB, 2 ВМ для prometheus и grafana, 2 ВМ для Elasticsearch и Kibana
+## 1.1 Создаем 2 ВМ для сайта в разных зонах и настраиваем LB, 2 ВМ для prometheus и grafana, 2 ВМ для Elasticsearch и Kibana
 файл main.tf
 
 ```terraform
@@ -513,8 +513,34 @@ sudo passwd root
 # cp /home/user/./.ssh/authorized_keys ~/./.ssh/authorized_keys для входа по root ssh 
 
 ```
+## 1.2 Настройка балансировщика
 
-## 3.2 Установка nginx, prometheus-node-exporter, prometheus-nginx-exporter с помощью Terraform
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/e147c533-6642-48e3-97b2-4b3886f873c8)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/5f9ec93a-7302-4bf4-87ce-05e108d1f598)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/51e93d13-86c4-4814-b216-296c61d9d6be)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/bbd0f875-6d52-47e9-9665-5b29d12dc1b3)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/de67d402-9fc6-48ca-a5dd-47db2912be91)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/04a1c5c7-0456-4bed-9a5d-b4ae788fea3f)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/04810dec-1c01-481c-ae60-0b9db943639d)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/f9389a88-8d5c-4398-948e-be4cc6c68b8a)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/c3e3d91a-eb1c-4c15-9514-68a44dd40a8f)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/bdd29ba7-3c21-44e7-af04-19eda6931708)
+
+## 1.3 Работа балансировщика
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/710acb63-bb30-4a25-a2f5-7cd6c5b31c17)
+
+![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/56d94095-9a80-409b-953f-5b18617647a7)
+## 2.1 Установка nginx, prometheus-node-exporter, prometheus-nginx-exporter с помощью Terraform
 ```yml
 #cloud-config  
 disable_root: true
@@ -548,38 +574,8 @@ users:
       - ssh-rsa 
 
 ```
-
-
-
-## 3.3 Настройка балансировщика
-
-![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/e147c533-6642-48e3-97b2-4b3886f873c8)
-
-![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/5f9ec93a-7302-4bf4-87ce-05e108d1f598)
-
-![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/51e93d13-86c4-4814-b216-296c61d9d6be)
-
-![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/bbd0f875-6d52-47e9-9665-5b29d12dc1b3)
-
-![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/de67d402-9fc6-48ca-a5dd-47db2912be91)
-
-![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/04a1c5c7-0456-4bed-9a5d-b4ae788fea3f)
-
-![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/04810dec-1c01-481c-ae60-0b9db943639d)
-
-![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/f9389a88-8d5c-4398-948e-be4cc6c68b8a)
-
-![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/c3e3d91a-eb1c-4c15-9514-68a44dd40a8f)
-
-![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/bdd29ba7-3c21-44e7-af04-19eda6931708)
-
-## 3.3.1 Работа балансировщика
-
-![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/710acb63-bb30-4a25-a2f5-7cd6c5b31c17)
-
-![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/56d94095-9a80-409b-953f-5b18617647a7)
-## 4. Prometheus и grafana
-### 4.1 Настройка prometheus и grafana 
+# 2. Prometheus и grafana
+## 2.1 Настройка prometheus и grafana 
 ```yml
 # ansible playbook MyShop
 
@@ -636,12 +632,12 @@ users:
       state: restarted
       enabled: true
 ```
-### 4.2 Работа prometheus и grafana
+## 2.2 Работа prometheus и grafana
 
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/6c7673b4-9c39-4993-92b2-46182067b260)
 ![image](https://github.com/UmarovAM/Graduation_Work_SYS-16/assets/118117183/bb8a96e9-e83d-4bfa-ae79-3ea0188a6aa6)
 
-# 5 Логи
+# 3 Логи
 Cоздайте ВМ, разверните на ней Elasticsearch. Установите filebeat в ВМ к веб-серверам, настройте на отправку access.log, error.log nginx в Elasticsearch.
 
 Создайте ВМ, разверните на ней Kibana, сконфигурируйте соединение с Elasticsearch
