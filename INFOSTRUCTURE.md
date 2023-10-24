@@ -80,7 +80,7 @@ terraform apply
 ```
 ## 3. Создание инфраструктуры с помощью Terraform.
 
-## 3.1 Создаем 2 ВМ для сайта в разных зонах и настраиваем LB, 2 ВМ для prometheus и grafana
+## 3.1 Создаем 2 ВМ для сайта в разных зонах и настраиваем LB, 2 ВМ для prometheus и grafana, 2 ВМ для Elasticsearch и Kibana
 файл main.tf
 
 ```terraform
